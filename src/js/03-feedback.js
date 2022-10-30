@@ -4,15 +4,12 @@ import Throttle from "lodash.throttle";
 	const form = document.querySelector(".feedback-form");
 	const email = document.querySelector("input");
 	const message = document.querySelector("textarea");
-	
-	let data={"email":"","message":""};
+
+	let data = {};
 
 	form.addEventListener("input", Throttle((event) => {
-		if (event.target.nodeName==="INPUT") {
-			data.email = event.target.value;
-		} else if (event.target.nodeName==="TEXTAREA") {
-			data.message = event.target.value;
-		}
+		data[event.target.name] = event.target.value;
+		data[event.target.name] = event.target.value;
 		if (data) {
 			localStorage.setItem("feedback-form-state", JSON.stringify(data));
 		}
@@ -20,16 +17,15 @@ import Throttle from "lodash.throttle";
 
 	form.addEventListener("submit", (event) => {
 		event.preventDefault();
-		console.log(data);
 		form.reset();
 		localStorage.removeItem("feedback-form-state");
-		data = {"email":"","message":""};
+		data = {};
 	});
-	
-	if (localStorage.getItem("feedback-form-state")) { 
+
+	if (localStorage.getItem("feedback-form-state")) {
 		data = JSON.parse(localStorage.getItem("feedback-form-state"));
 	}
-	email.value = data.email;
-	message.value = data.message;
+	email.value = data.email || "";
+	message.value = data.message || "";
 })();
 
